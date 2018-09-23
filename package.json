@@ -1,7 +1,7 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Build a Toggle Component\n",
+  "description": "Write Compound Components\n\n",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
