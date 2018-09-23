@@ -1,7 +1,7 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Write Compound Components\n\n",
+  "description": "Make Compound React Components Flexible\n",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
