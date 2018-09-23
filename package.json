@@ -1,7 +1,7 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Make Compound React Components Flexible\n",
+  "description": "Validate Compound Component Context Consumers",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {

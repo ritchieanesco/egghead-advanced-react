@@ -1,13 +1,34 @@
 import React, { Component } from "react";
 import { Switch } from "../src/switch";
 
-//Our current compound component implementation is great, but it's limited in that users cannot render the structure they need.
-//Let's allow the user to have more flexibility by using React context to share the implicit state to our child <Toggle/> components.
-//We will walk through using React's official context API with React.createContext and use the given Provider and Consumer components
-//to share state implicitly between our compound components giving our users the flexibility they need out of our component.
+//If someone uses one of our compound components outside the React.createContext < ToggleContext.Provider />,
+//they will experience a confusing error.
+//We could provide a default value for our context,
+//but in our situation that doesn't make sense.
+//Instead let's build a simple function component which does validation of our contextValue
+//that comes from the < ToggleContext.Consumer />.
+//That way we can provide a more helpful error message.
 
 const ToggleContext = React.createContext();
 //This is the key that connects state and props to children
+
+function ToggleConsumer(props) {
+  return (
+    <ToggleContext.Consumer>
+      {context => {
+        if (!context) {
+          throw new Error(
+            "Toggle compound components must be rendered within the Toggle component"
+          );
+        }
+        return props.children(context);
+      }}
+    </ToggleContext.Consumer>
+  );
+}
+//Function to validate the consumer
+// This is used if Toggle Provider does not wrap the
+// Toggle Consumer
 
 class Toggle extends Component {
   static On = ({ children }) => (
