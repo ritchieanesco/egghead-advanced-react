@@ -1,8 +1,10 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Validate Compound Component Context Consumers",
-  "keywords": [],
+  "description": "Use Render Props with React\n",
+  "keywords": [
+    "render-props"
+  ],
   "main": "src/index.js",
   "dependencies": {
     "react": "16.4.2",
