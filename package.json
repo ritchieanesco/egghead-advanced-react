@@ -1,10 +1,8 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Use Prop Collections with Render Props",
-  "keywords": [
-    "render-props"
-  ],
+  "description": "Use Prop Getters with Render Props\n",
+  "keywords": [],
   "main": "src/index.js",
   "dependencies": {
     "react": "16.4.2",
