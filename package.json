@@ -1,7 +1,7 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Use Render Props with React\n",
+  "description": "Use Prop Collections with Render Props",
   "keywords": [
     "render-props"
   ],

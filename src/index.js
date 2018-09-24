@@ -10,12 +10,14 @@ function logger(log) {
 function App() {
   return (
     <Toggle onToggle={logger}>
-      {({ on, toggle }) => (
+      {({ on, togglerProps }) => (
+        //togglerProps contains all the attributes, callbacks which can
+        //be destructured in a element
         <div>
           {on ? "The button is on" : "The button is off"}
-          <Switch on={on} onClick={toggle} />
+          <Switch on={on} {...togglerProps} />
           <hr />
-          <button aria-label="custom-button" onClick={toggle}>
+          <button aria-label="custom-button" {...togglerProps}>
             {on ? "on" : "off"}
           </button>
         </div>

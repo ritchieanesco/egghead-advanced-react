@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Switch } from "../src/switch";
 
-//A render prop is a function that renders JSX based on state and helper arguments.
-//This pattern is the most flexible way to share component logic while giving complete UI flexibility.
-//It's a remarkably simple and powerful pattern.
+//Sometimes you have common use cases that require common props to be applied to certain elements.
+//You can collect these props into an object for users to simply apply to their elements and we'll see how to do that in this lesson.
 
 class Toggle extends Component {
   state = { on: false };
@@ -16,13 +15,22 @@ class Toggle extends Component {
     );
   };
 
+  getStateAndHelpers() {
+    return {
+      on: this.state.on,
+      toggle: this.toggle,
+      // below can be passed to element and destructured
+      togglerProps: {
+        onClick: this.toggle,
+        "aria-pressed": this.state.on
+      }
+    };
+  }
+
   render() {
     //remove all rendering to props and provide the rendering all
     // the state and callbacks required to render
-    return this.props.children({
-      on: this.state.on,
-      toggle: this.toggle
-    });
+    return this.props.children(this.getStateAndHelpers());
   }
 }
 export default Toggle;
