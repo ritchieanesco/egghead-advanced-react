@@ -8,7 +8,17 @@ const runFns = (...fns) => (...args) => fns.forEach(fn => fn && fn(...args));
 //utility to pass in a list of arguments to execute
 
 class Toggle extends Component {
-  state = { on: false };
+  static defaultProps = {
+    initialOn: false,
+    onReset: () => {}
+  };
+  //set an initalState that can be reused
+  // for reset
+  // use initialOn props to allow users to
+  //control the initialState. Use defaultProps
+  // to set the default value
+  initialState = { on: this.props.initialOn };
+  state = this.initialState;
   toggle = () => {
     this.setState(
       ({ on }) => ({ on: !on }),
@@ -18,10 +28,17 @@ class Toggle extends Component {
     );
   };
 
+  reset = () => {
+    this.setState(this.initialState, () => {
+      this.props.onReset(this.state.on);
+    });
+  };
+
   getStateAndHelpers() {
     return {
       on: this.state.on,
       toggle: this.toggle,
+      reset: this.reset,
       // provide a function to retrieve all props
       getTogglerProps: this.getTogglerProps
     };

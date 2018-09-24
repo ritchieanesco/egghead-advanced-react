@@ -1,7 +1,7 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Use Prop Getters with Render Props\n",
+  "description": "Initialise Components State and Reset Functionality",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {

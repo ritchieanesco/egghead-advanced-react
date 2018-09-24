@@ -13,8 +13,12 @@ function alertTest() {
 
 function App() {
   return (
-    <Toggle onToggle={logger}>
-      {({ on, getTogglerProps }) => (
+    <Toggle
+      //initialOn={true} ability to set initial state
+      onToggle={logger}
+      onReset={logger}
+    >
+      {({ on, getTogglerProps, reset }) => (
         //getTogglerProps has the ability to pass in additional
         // attributes and events which can then be destructured
         //in the component
@@ -31,6 +35,8 @@ function App() {
           >
             {on ? "on" : "off"}
           </button>
+          <hr />
+          <button onClick={() => reset()}>Reset</button>
         </div>
       )}
     </Toggle>
