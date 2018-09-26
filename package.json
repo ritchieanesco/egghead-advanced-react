@@ -1,7 +1,7 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Initialise Components State and Reset Functionality",
+  "description": "Implement Component State Reducers",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {

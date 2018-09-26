@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Switch } from "../src/switch";
 
-//When you're using prop collections, sometimes you can run into trouble with exposing implementation details of your prop collections.
-//Abstract that away by simply creating a function called a prop getter that will compose the user's props with our prop collection.
+//Often with reusable components, the logic needs to be adjusted to handle various use cases.
+//Rather than filling our component event handlers with if statements and loading our state
+//with one-off properties, we can expose our state directly to users of our reusable component
+//in a way that's flexible and simple with a state reducer.
 
 const runFns = (...fns) => (...args) => fns.forEach(fn => fn && fn(...args));
 //utility to pass in a list of arguments to execute
@@ -12,15 +14,22 @@ class Toggle extends Component {
     initialOn: false,
     onReset: () => {}
   };
-  //set an initalState that can be reused
-  // for reset
-  // use initialOn props to allow users to
-  //control the initialState. Use defaultProps
-  // to set the default value
   initialState = { on: this.props.initialOn };
   state = this.initialState;
+  internalSetState(changes, callback) {
+    //internal state uses a 'state reducer' to determine if the updated
+    // state should apply
+    this.setState(state => {
+      const changesObject =
+        typeof changes === "function" ? changes(state) : changes;
+      const reducedChanges =
+        this.props.stateReducer(state, changesObject) || {};
+      return Object.keys(reducedChanges).length ? reducedChanges : null;
+    }, callback);
+  }
   toggle = () => {
-    this.setState(
+    // use an additional state to handle changes prior to set state
+    this.internalSetState(
       ({ on }) => ({ on: !on }),
       () => {
         this.props.onToggle(this.state.on);
@@ -29,7 +38,8 @@ class Toggle extends Component {
   };
 
   reset = () => {
-    this.setState(this.initialState, () => {
+    // use an additional state to handle changes prior to set state
+    this.internalSetState(this.initialState, () => {
       this.props.onReset(this.state.on);
     });
   };
@@ -53,8 +63,6 @@ class Toggle extends Component {
   };
 
   render() {
-    //remove all rendering to props and provide the rendering all
-    // the state and callbacks required to render
     return this.props.children(this.getStateAndHelpers());
   }
 }
