@@ -20,6 +20,9 @@ class MyComponent extends Component {
     this.props.onReset(...args);
   };
   toggleStateReducer = (state, changes) => {
+    if (changes.type === Toggle.stateChangeTypes.reset) {
+      return changes;
+    }
     if (this.state.timesClicked >= 4) {
       return { ...changes, on: false };
     }

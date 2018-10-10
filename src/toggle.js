@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Switch } from "../src/switch";
 
-//Often with reusable components, the logic needs to be adjusted to handle various use cases.
-//Rather than filling our component event handlers with if statements and loading our state
-//with one-off properties, we can expose our state directly to users of our reusable component
-//in a way that's flexible and simple with a state reducer.
+//Users of our component can make custom modifications to the state whenever it changes,
+//but in more complex components they may only want to change the state updates for certain types of changes.
+//Added type props to indiciators the current action
 
 const runFns = (...fns) => (...args) => fns.forEach(fn => fn && fn(...args));
 //utility to pass in a list of arguments to execute
@@ -13,6 +12,11 @@ class Toggle extends Component {
   static defaultProps = {
     initialOn: false,
     onReset: () => {}
+  };
+  //centralise type constants, this is also accessible outside of the class
+  static stateChangeTypes = {
+    reset: "__reset__",
+    toggle: "__toggle__"
   };
   initialState = { on: this.props.initialOn };
   state = this.initialState;
@@ -24,13 +28,15 @@ class Toggle extends Component {
         typeof changes === "function" ? changes(state) : changes;
       const reducedChanges =
         this.props.stateReducer(state, changesObject) || {};
-      return Object.keys(reducedChanges).length ? reducedChanges : null;
+      //strip off type prop to prevent unrequired re-render.
+      const { type: ignoredType, ...onlyChanges } = reducedChanges;
+      return Object.keys(onlyChanges).length ? onlyChanges : null;
     }, callback);
   }
-  toggle = () => {
+  toggle = ({ type = Toggle.stateChangeTypes.toggle } = {}) => {
     // use an additional state to handle changes prior to set state
     this.internalSetState(
-      ({ on }) => ({ on: !on }),
+      ({ on }) => ({ on: !on, type }),
       () => {
         this.props.onToggle(this.state.on);
       }
@@ -39,9 +45,12 @@ class Toggle extends Component {
 
   reset = () => {
     // use an additional state to handle changes prior to set state
-    this.internalSetState(this.initialState, () => {
-      this.props.onReset(this.state.on);
-    });
+    this.internalSetState(
+      { ...this.initialState, type: Toggle.stateChangeTypes.reset },
+      () => {
+        this.props.onReset(this.state.on);
+      }
+    );
   };
 
   getStateAndHelpers() {
@@ -56,7 +65,7 @@ class Toggle extends Component {
 
   getTogglerProps = ({ onClick, ...props } = {}) => {
     return {
-      onClick: runFns(onClick, this.toggle),
+      onClick: runFns(onClick, () => this.toggle()),
       "aria-pressed": this.state.on,
       ...props
     };

@@ -1,7 +1,7 @@
 {
   "name": "egghead-advanced-react",
   "version": "1.0.0",
-  "description": "Implement Component State Reducers",
+  "description": "Improve the usability of Component State Reducers with state change types",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
